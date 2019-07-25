@@ -25,11 +25,11 @@ public class HelpDialog extends JDialog{
 		
 		cancel.setLocation(20, 310);
 		cancel.setSize(90, 30);
-		cancel.addActionListener((ActionEvent e) -> {System.exit(0);});
+		cancel.addActionListener((ActionEvent e) -> {this.discard()});
 		
 		ok.setLocation(110, 310);
 		ok.setSize(90, 30);
-		ok.addActionListener((ActionEvent e) -> {System.exit(0);});
+		ok.addActionListener((ActionEvent e) -> {this.discard();});
 		
 		text.setColumns(20);
 		text.setRows(5);
