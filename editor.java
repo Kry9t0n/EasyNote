@@ -90,6 +90,8 @@ public class editor extends JFrame implements ActionListener {
 		localdate.addActionListener(this);
 		time.addActionListener(this);
 		print.addActionListener(this);
+		mark.addActionListener(this);
+		search.addActionListener(this);
 		menu2.add(info);
 		menu2.add(help);
 		//menu1
@@ -136,6 +138,9 @@ public class editor extends JFrame implements ActionListener {
 		case "Zeit":
 			//area.setText(getTime());
 			area.append(getTime());
+			break;
+		case "Markieren":
+			mark();
 			break;
 		case "Drucken":
 			/*
@@ -208,7 +213,13 @@ public class editor extends JFrame implements ActionListener {
 		setTitle("EasyNote --- " + " " + filename);
 	}
 	
-	
+	public void mark() {
+		if(area.getSelectedText() == null) {
+			javax.swing.JOptionPane.showMessageDialog(null, "Text muss erst ausgewählt werden");
+		}else {
+			new ColorChooserDialog();
+		}
+	}
 	
 
 	public static void main(String[] args) {
