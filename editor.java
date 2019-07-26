@@ -27,6 +27,8 @@ public class editor extends JFrame implements ActionListener {
 	private JFileChooser chooser;
 	private JMenuItem save;
 	private JMenuItem close;
+	private JMenuItem search;
+	private JMenuItem mark;
 	private JMenuItem open;
 	private JMenuItem info;
 	private JMenuItem help;
@@ -47,6 +49,8 @@ public class editor extends JFrame implements ActionListener {
 		jlabel1 = new JLabel();
 		jsp = new JScrollPane(area);
 		chooser = new JFileChooser();
+		search = new JMenuItem("Suchen");
+		mark = new JMenuItem("Markieren");
 		save = new JMenuItem("Speichern", KeyEvent.VK_S);
 		open = new JMenuItem("Öffnen", KeyEvent.VK_O);
 		close = new JMenuItem("Beenden");
@@ -63,6 +67,7 @@ public class editor extends JFrame implements ActionListener {
 		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		print.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
+		mark.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK));
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(700, 600);
@@ -74,6 +79,8 @@ public class editor extends JFrame implements ActionListener {
 		date.add(time);
 		date.add(localdate);
 		edit.add(date);
+		edit.add(search);
+		edit.add(mark);
 		//edit.add(font);
 		save.addActionListener(this);
 		open.addActionListener(this);
