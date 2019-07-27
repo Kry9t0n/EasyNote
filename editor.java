@@ -46,6 +46,7 @@ public class editor extends JFrame implements ActionListener {
 	private Color MARK;
 	private Highlighter highlighter;
 	private HighlightPainter painter;
+	private MarkColorChooserDialog c_dialog;
 
 	public editor() {
 		super("EasyNote");//setting the title
@@ -156,9 +157,8 @@ public class editor extends JFrame implements ActionListener {
 				javax.swing.JOptionPane.showMessageDialog(null, "Text muss erst ausgewählt werden");
 				break;
 			}else {
-				new MarkColorChooserDialog(this);
+				c_dialog = new MarkColorChooserDialog(this);
 			}
-			mark();
 			break;
 		case "Drucken":
 			/*
@@ -232,8 +232,6 @@ public class editor extends JFrame implements ActionListener {
 	}
 	
 	public void mark() {
-		
-			System.out.println(MARK.toString());
 			painter = new DefaultHighlighter.DefaultHighlightPainter(MARK);
 			int start_pos = area.getText().indexOf(area.getSelectedText());
 			int end = start_pos + area.getSelectedText().length();
