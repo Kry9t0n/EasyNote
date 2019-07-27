@@ -42,8 +42,4 @@ public class MarkColorChooserDialog extends JDialog implements ChangeListener{
 		parent.setMarkColor(choosen);
 		
 	}
-	
-	public static void main(String[] args) {
-		MarkColorChooserDialog m = new MarkColorChooserDialog(null);
-	}
 }
