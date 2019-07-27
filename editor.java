@@ -1,7 +1,11 @@
 package editor;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultEditorKit.CopyAction;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
 import javax.swing.text.Keymap;
 
 import java.util.*;
@@ -39,9 +43,15 @@ public class editor extends JFrame implements ActionListener {
 	private JMenuItem time, localdate;
 	//private JMenuItem font;
 	private String cpy; // copy string
+	private Color MARK;
+	private Highlighter highlighter;
+	private HighlightPainter painter;
 
 	public editor() {
 		super("EasyNote");//setting the title
+		
+		highlighter = new DefaultHighlighter();
+		
 		bar = new JMenuBar();
 		area = new JTextArea(20, 20);
 		menu1 = new JMenu("Datei...");
@@ -62,6 +72,8 @@ public class editor extends JFrame implements ActionListener {
 		time = new JMenuItem("Zeit");
 		localdate = new JMenuItem("Datum");
 		//font = new JMenuItem("Schrifteinstellungen");
+		
+		area.setHighlighter(highlighter);
 		
 		//setting the shortcuts
 		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
@@ -140,6 +152,12 @@ public class editor extends JFrame implements ActionListener {
 			area.append(getTime());
 			break;
 		case "Markieren":
+			if(area.getSelectedText() == null) {
+				javax.swing.JOptionPane.showMessageDialog(null, "Text muss erst ausgewählt werden");
+				break;
+			}else {
+				new MarkColorChooserDialog(this);
+			}
 			mark();
 			break;
 		case "Drucken":
@@ -214,13 +232,22 @@ public class editor extends JFrame implements ActionListener {
 	}
 	
 	public void mark() {
-		if(area.getSelectedText() == null) {
-			javax.swing.JOptionPane.showMessageDialog(null, "Text muss erst ausgewählt werden");
-		}else {
-			new ColorChooserDialog();
-		}
+		
+			System.out.println(MARK.toString());
+			painter = new DefaultHighlighter.DefaultHighlightPainter(MARK);
+			int start_pos = area.getText().indexOf(area.getSelectedText());
+			int end = start_pos + area.getSelectedText().length();
+			try {
+				highlighter.addHighlight(start_pos, end, painter);
+			} catch (BadLocationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 	
+	public void setMarkColor(Color c) {
+		this.MARK = c;
+	}
 
 	public static void main(String[] args) {
 		editor e = new editor();
