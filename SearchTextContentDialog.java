@@ -34,6 +34,7 @@ public class SearchTextContentDialog extends JDialog implements WindowListener{
 	private final Color HIGHLIGHT;
 	private Highlighter highligther;
 	private HighlightPainter painter;
+	private Object HighlightTag;
 
 	public SearchTextContentDialog(JTextArea jtxt) {
 		this.jtxt = jtxt;
@@ -44,9 +45,8 @@ public class SearchTextContentDialog extends JDialog implements WindowListener{
 		
 		ERROR = Color.RED;
 		HIGHLIGHT = Color.lightGray;
-		highligther = new DefaultHighlighter();
+		highligther = jtxt.getHighlighter();
 		painter = new DefaultHighlighter.DefaultHighlightPainter(HIGHLIGHT);
-		this.jtxt.setHighlighter(highligther);
 		
 		search = new JButton("Suchen");
 		input = new JTextField("Eingabe");
@@ -117,7 +117,7 @@ public class SearchTextContentDialog extends JDialog implements WindowListener{
 			if (begin >= 0) {
 				int end = begin + key.length();
 				try {
-					highligther.addHighlight(begin, end, painter);
+					HighlightTag = highligther.addHighlight(begin, end, painter);
 				} catch (BadLocationException e) {
 					e.printStackTrace();
 				}
@@ -134,7 +134,7 @@ public class SearchTextContentDialog extends JDialog implements WindowListener{
 
 	@Override
 	public void windowClosed(WindowEvent e) {
-		highligther.removeAllHighlights();
+		highligther.removeHighlight(HighlightTag);
 	}
 
 	@Override
