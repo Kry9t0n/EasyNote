@@ -160,6 +160,9 @@ public class editor extends JFrame implements ActionListener {
 				c_dialog = new MarkColorChooserDialog(this);
 			}
 			break;
+		case "Suchen":
+			new SearchTextContentDialog(this.area);
+			break;
 		case "Drucken":
 			/*
 			npj = new NetPrintJobs(this.area);
