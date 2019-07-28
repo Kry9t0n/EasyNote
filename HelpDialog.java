@@ -55,7 +55,7 @@ public class HelpDialog extends JDialog{
 	}
 	
 	private void setHelpText() {
-		String text = "SHORTCUTS:\n Ctrl + s: opens the save dialog\n Ctrl + o: open the dialog to choose a later note to open\n Ctrl + p: opens the printer dialog\n"
+		String text = "SHORTCUTS:\n Ctrl + s: opens the save dialog\n Ctrl + o: open the dialog to choose a later note to open\n Ctrl + p: opens the printer dialog\n Ctrl + m: opens the color chooser dialog"
 				+ "MNEMONICS:\n Datei -> s: opens the save dialog\n Hilfe -> h: opens the help dialog (this)\n";
 		this.text.setText(text);
 	}
