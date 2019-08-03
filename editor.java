@@ -10,6 +10,11 @@ import javax.swing.text.Keymap;
 
 import java.util.*;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -35,6 +40,8 @@ public class editor extends JFrame implements ActionListener {
 	private JMenuItem mark;
 	private JMenuItem open;
 	private JMenuItem info;
+	private JMenuItem copy;
+	private JMenuItem paste;
 	private JMenuItem help;
 	private JMenuItem print;
 	private JMenu edit;
@@ -47,9 +54,15 @@ public class editor extends JFrame implements ActionListener {
 	private Highlighter highlighter;
 	private HighlightPainter painter;
 	private MarkColorChooserDialog c_dialog;
+	private Clipboard system;
 
 	public editor() {
 		super("EasyNote");//setting the title
+		
+		//Initialize the system clipboard
+		system = Toolkit.getDefaultToolkit().getSystemClipboard();
+		
+		
 		
 		highlighter = new DefaultHighlighter();
 		
@@ -61,6 +74,8 @@ public class editor extends JFrame implements ActionListener {
 		jsp = new JScrollPane(area);
 		chooser = new JFileChooser();
 		search = new JMenuItem("Suchen");
+		copy = new JMenuItem("Kopieren");
+		paste = new JMenuItem("Einfügen");
 		mark = new JMenuItem("Markieren");
 		save = new JMenuItem("Speichern", KeyEvent.VK_S);
 		open = new JMenuItem("Öffnen", KeyEvent.VK_O);
@@ -94,6 +109,8 @@ public class editor extends JFrame implements ActionListener {
 		edit.add(date);
 		edit.add(search);
 		edit.add(mark);
+		edit.add(copy);
+		edit.add(paste);
 		//edit.add(font);
 		save.addActionListener(this);
 		open.addActionListener(this);
@@ -105,6 +122,8 @@ public class editor extends JFrame implements ActionListener {
 		print.addActionListener(this);
 		mark.addActionListener(this);
 		search.addActionListener(this);
+		copy.addActionListener(this);
+		paste.addActionListener(this);
 		menu2.add(info);
 		menu2.add(help);
 		//menu1
@@ -162,6 +181,17 @@ public class editor extends JFrame implements ActionListener {
 			break;
 		case "Suchen":
 			new SearchTextContentDialog(this.area);
+			break;
+		case "Kopieren":
+			copy();
+			break;
+		case "Einfügen":
+			try {
+				paste();
+			} catch (UnsupportedFlavorException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			break;
 		case "Drucken":
 			/*
@@ -248,6 +278,30 @@ public class editor extends JFrame implements ActionListener {
 	
 	public void setMarkColor(Color c) {
 		this.MARK = c;
+	}
+	
+	public void copy() {
+		if(area.getSelectedText() != null) {
+			system.setContents(new StringSelection(area.getSelectedText()), null);
+		}
+	}
+	
+	public void paste() throws UnsupportedFlavorException, IOException {
+		Transferable transfer = transfer = system.getContents(null);
+		String s = area.getText();
+		System.out.println(s);
+		for(DataFlavor flavor : transfer.getTransferDataFlavors()) {
+			Object content = transfer.getTransferData(flavor);
+			if(content instanceof String) {
+				if(s.equals("")) {
+					s = (String) content;
+					break;
+				}
+				s += "\n"+content;
+				break;
+			}
+		}
+		area.setText(s);
 	}
 
 	public static void main(String[] args) {
