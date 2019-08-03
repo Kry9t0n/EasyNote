@@ -289,7 +289,6 @@ public class editor extends JFrame implements ActionListener {
 	public void paste() throws UnsupportedFlavorException, IOException {
 		Transferable transfer = transfer = system.getContents(null);
 		String s = area.getText();
-		System.out.println(s);
 		for(DataFlavor flavor : transfer.getTransferDataFlavors()) {
 			Object content = transfer.getTransferData(flavor);
 			if(content instanceof String) {
