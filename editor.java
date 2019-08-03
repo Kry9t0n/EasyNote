@@ -306,8 +306,6 @@ public class editor extends JFrame implements ActionListener {
 
 	public static void main(String[] args) {
 		editor e = new editor();
-		System.out.println(e.getDate());
-		System.out.println(e.getTime());
 	}
 
 }
