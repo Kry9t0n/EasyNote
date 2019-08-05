@@ -8,6 +8,7 @@ Development of a little note editor
 - search words in the text (if the searched word in included several times only the first one will be marked)
 - insert the actual date and time into the text
 - give user help with the shortcuts and mnemorics
+- copy and paste content with a menu button
 
 # EasyNote --- What to expect
 EasyNote is a lightweight, simple text editor written in java. 
