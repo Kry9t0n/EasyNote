@@ -171,7 +171,7 @@ public class editor extends JFrame implements ActionListener {
             renderSplashFrame(g, i);
             splash.update();
             try {
-                Thread.sleep(90);
+                Thread.sleep(200);
             }
             catch(InterruptedException e) {
             }
