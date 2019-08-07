@@ -132,7 +132,7 @@ public class SearchTextContentDialog extends JDialog implements WindowListener {
 
 	@Override
 	public void windowClosed(WindowEvent e) {
-		if (highligther != null) {
+		if (this.HighlightTag != null) {
 			highligther.removeHighlight(HighlightTag);
 		}
 	}
