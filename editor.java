@@ -64,7 +64,7 @@ public class editor extends JFrame implements ActionListener {
         g.fillRect(120,50,200,40);
         g.setPaintMode();
         g.setColor(Color.BLACK);
-        g.drawString("Loading "+comps[(frame/5)%3], 120, 150);
+        g.drawString("Loading "+comps[(frame/5)%3], 20, 20);
 	}
 	
 	public editor() {
