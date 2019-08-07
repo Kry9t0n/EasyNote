@@ -1,6 +1,5 @@
 package editor;
 
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
@@ -24,7 +23,7 @@ import javax.swing.text.Highlighter.HighlightPainter;
  *
  */
 
-public class SearchTextContentDialog extends JDialog implements WindowListener{
+public class SearchTextContentDialog extends JDialog implements WindowListener {
 	private JTextArea jtxt;
 	private JLabel searchString;
 	private JLabel res;
@@ -38,23 +37,23 @@ public class SearchTextContentDialog extends JDialog implements WindowListener{
 
 	public SearchTextContentDialog(JTextArea jtxt) {
 		this.jtxt = jtxt;
-		
-		//setting the layout
+
+		// setting the layout
 		SpringLayout spring = new SpringLayout();
 		getContentPane().setLayout(spring);
-		
+
 		ERROR = Color.RED;
 		HIGHLIGHT = Color.lightGray;
 		highligther = jtxt.getHighlighter();
 		painter = new DefaultHighlighter.DefaultHighlightPainter(HIGHLIGHT);
-		
+
 		search = new JButton("Suchen");
 		input = new JTextField("Eingabe");
 		searchString = new JLabel("Text eingeben:");
 		res = new JLabel();
 
 		input.setColumns(15);
-		//input.setLocation(70, 30);
+		// input.setLocation(70, 30);
 		input.setEditable(true);
 		add(input);
 
@@ -66,32 +65,30 @@ public class SearchTextContentDialog extends JDialog implements WindowListener{
 		search.setLocation(400, 50);
 		add(search);
 
-		
-	
 		searchString.setLocation(10, 30);
 		searchString.setSize(120, 30);
 		add(searchString);
-	
+
 		res.setLocation(10, 380);
 		res.setText("No job executed");
 		add(res);
-		
+
 		// adjust constrains
 		spring.putConstraint(SpringLayout.WEST, searchString, 5, SpringLayout.WEST, getContentPane());
 		spring.putConstraint(SpringLayout.NORTH, searchString, 5, SpringLayout.NORTH, getContentPane());
-		
+
 		spring.putConstraint(SpringLayout.WEST, input, 5, SpringLayout.EAST, searchString);
 		spring.putConstraint(SpringLayout.NORTH, input, 5, SpringLayout.NORTH, getContentPane());
-		
+
 		spring.putConstraint(SpringLayout.EAST, getContentPane(), 5, SpringLayout.EAST, input);
 		spring.putConstraint(SpringLayout.SOUTH, getContentPane(), 50, SpringLayout.SOUTH, input);
-		
+
 		spring.putConstraint(SpringLayout.WEST, search, 15, SpringLayout.WEST, getContentPane());
 		spring.putConstraint(SpringLayout.NORTH, search, 10, SpringLayout.NORTH, getContentPane());
-		
+
 		spring.putConstraint(SpringLayout.NORTH, search, 10, SpringLayout.SOUTH, searchString);
 		spring.putConstraint(SpringLayout.SOUTH, getContentPane(), 40, SpringLayout.SOUTH, search);
-		
+
 		spring.putConstraint(SpringLayout.WEST, res, 50, SpringLayout.WEST, getContentPane());
 		spring.putConstraint(SpringLayout.NORTH, res, 10, SpringLayout.SOUTH, search);
 		spring.putConstraint(SpringLayout.SOUTH, getContentPane(), 25, SpringLayout.SOUTH, res);
@@ -102,7 +99,7 @@ public class SearchTextContentDialog extends JDialog implements WindowListener{
 		setLocationRelativeTo(null);
 		setResizable(true);
 		setVisible(true);
-		
+
 	}
 
 	private void search(String exp) {
@@ -122,7 +119,7 @@ public class SearchTextContentDialog extends JDialog implements WindowListener{
 					e.printStackTrace();
 				}
 				res.setText("Wort gefunden!");
-			}else {
+			} else {
 				res.setText("Word nicht enthalten");
 				res.setForeground(ERROR);
 			}
@@ -130,26 +127,34 @@ public class SearchTextContentDialog extends JDialog implements WindowListener{
 	}
 
 	@Override
-	public void windowActivated(WindowEvent e) {}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-		highligther.removeHighlight(HighlightTag);
+	public void windowActivated(WindowEvent e) {
 	}
 
 	@Override
-	public void windowClosing(WindowEvent e) {}
+	public void windowClosed(WindowEvent e) {
+		if (highligther != null) {
+			highligther.removeHighlight(HighlightTag);
+		}
+	}
 
 	@Override
-	public void windowDeactivated(WindowEvent e) {}
+	public void windowClosing(WindowEvent e) {
+	}
 
 	@Override
-	public void windowDeiconified(WindowEvent e) {}
+	public void windowDeactivated(WindowEvent e) {
+	}
 
 	@Override
-	public void windowIconified(WindowEvent e) {}
+	public void windowDeiconified(WindowEvent e) {
+	}
 
 	@Override
-	public void windowOpened(WindowEvent e) {}
-	
+	public void windowIconified(WindowEvent e) {
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+	}
+
 }
