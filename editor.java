@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import javax.sound.*;
+
 
 public class editor extends JFrame implements ActionListener {
 	private JMenuBar bar;
@@ -55,7 +55,18 @@ public class editor extends JFrame implements ActionListener {
 	private HighlightPainter painter;
 	private MarkColorChooserDialog c_dialog;
 	private Clipboard system;
+	private SplashScreen splash;
 
+	
+	public static void renderSplashFrame(Graphics2D g, int frame) {
+		final String[] comps = {".", "..", "..."};
+        g.setComposite(AlphaComposite.Clear);
+        g.fillRect(120,50,200,40);
+        g.setPaintMode();
+        g.setColor(Color.BLACK);
+        g.drawString("Loading "+comps[(frame/5)%3], 20, 20);
+	}
+	
 	public editor() {
 		super("EasyNote");//setting the title
 		
@@ -141,10 +152,33 @@ public class editor extends JFrame implements ActionListener {
 		add(jsp);
 		setJMenuBar(bar);
 		
-
+		splashInit();
+		
 		setVisible(true);
 	}
-
+	
+	
+	private void splashInit() {
+		splash = SplashScreen.getSplashScreen();
+		if (splash == null) {
+			throw new NullPointerException("SplashScreen.getSpashScreen() returned null");
+        }
+        Graphics2D g = splash.createGraphics();
+        if (g == null) {
+        	throw new NullPointerException("SplashScreen.getSplashScreen().createGraphics() returned null");
+        }
+        for(int i=0; i<100; i++) {
+            renderSplashFrame(g, i);
+            splash.update();
+            try {
+                Thread.sleep(200);
+            }
+            catch(InterruptedException e) {
+            }
+        }
+        splash.close();
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		String cmd = event.getActionCommand();
@@ -286,21 +320,23 @@ public class editor extends JFrame implements ActionListener {
 		}
 	}
 	
-	public void paste() throws UnsupportedFlavorException, IOException {
+	public void paste() throws UnsupportedFlavorException, IOException {//TODO: area.append() 
 		Transferable transfer = transfer = system.getContents(null);
-		String s = area.getText();
+		//String s = area.getText();
 		for(DataFlavor flavor : transfer.getTransferDataFlavors()) {
 			Object content = transfer.getTransferData(flavor);
 			if(content instanceof String) {
-				if(s.equals("")) {
+				/*if(s.equals("")) {
 					s = (String) content;
 					break;
 				}
-				s += "\n"+content;
+				s += "\n"+content;*/
+				area.append((String) content);
 				break;
 			}
 		}
-		area.setText(s);
+		//area.setText(s);
+		
 	}
 
 	public static void main(String[] args) {
