@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: .
+Main-Class: editor.editor
+SplashScreen-Image: images/architecture-1850129_640.jpg
