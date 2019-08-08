@@ -19,6 +19,8 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.print.PrinterException;
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -27,7 +29,7 @@ import java.time.format.DateTimeFormatter;
 
 
 
-public class editor extends JFrame implements ActionListener {
+public class editor extends JFrame implements ActionListener, WindowListener {
 	private JMenuBar bar;
 	private JMenu menu1;
 	private JMenu menu2;
@@ -60,6 +62,7 @@ public class editor extends JFrame implements ActionListener {
 	private UndoManager undoManager;
 	private JMenuItem undo;
 	private JMenuItem redo;
+	private boolean fileSaved;
 
 	
 	public static void renderSplashFrame(Graphics2D g, int frame) {
@@ -73,6 +76,7 @@ public class editor extends JFrame implements ActionListener {
 	
 	public editor() {
 		super("EasyNote");//setting the title
+		fileSaved = false;
 		
 		//Initialize the system clipboard
 		system = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -160,7 +164,7 @@ public class editor extends JFrame implements ActionListener {
 		bar.add(edit);
 		bar.add(menu2);
 		add(bar);
-		
+		addWindowListener(this);
 		jsp.setSize(450, 500);
 		jsp.setLocation(200, 5);
 		add(jsp);
@@ -309,6 +313,7 @@ public class editor extends JFrame implements ActionListener {
 				PrintWriter write = new PrintWriter(f);
 				write.println(area.getText());
 				write.close();
+				fileSaved = true;
 			}catch (Exception e) {
 				Toolkit.getDefaultToolkit().beep();
 				javax.swing.JOptionPane.showMessageDialog(null, "Datei konnte nicht gespeichert werden", "Fehler", JOptionPane.ERROR_MESSAGE);
@@ -373,6 +378,41 @@ public class editor extends JFrame implements ActionListener {
 		
 	}
 
+	@Override
+	public void windowActivated(WindowEvent arg0) {}
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {}
+
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		if(!fileSaved) {
+			int confirm = javax.swing.JOptionPane.showConfirmDialog(this, "Speichern?");
+			switch(confirm) {
+			case 3: case -1: break;
+			case 1: 
+				this.dispose();
+				break;
+			case 0:
+				saveFile();
+				this.dispose();
+				break;
+			}
+		}
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {}
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {}
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {}
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {}
+	
 	public static void main(String[] args) {
 		editor e = new editor();
 	}
