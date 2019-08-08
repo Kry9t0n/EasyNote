@@ -7,6 +7,7 @@ import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
 import javax.swing.text.Keymap;
+import javax.swing.undo.UndoManager;
 
 import java.util.*;
 import java.awt.*;
@@ -56,6 +57,9 @@ public class editor extends JFrame implements ActionListener {
 	private MarkColorChooserDialog c_dialog;
 	private Clipboard system;
 	private SplashScreen splash;
+	private UndoManager undoManager;
+	private JMenuItem undo;
+	private JMenuItem redo;
 
 	
 	public static void renderSplashFrame(Graphics2D g, int frame) {
@@ -98,9 +102,15 @@ public class editor extends JFrame implements ActionListener {
 		date = new JMenu("Datum und Zeit");
 		time = new JMenuItem("Zeit");
 		localdate = new JMenuItem("Datum");
+		undo = new JMenuItem("Undo");
+		redo = new JMenuItem("Redo");
 		//font = new JMenuItem("Schrifteinstellungen");
 		
+		//Initializing undomanager
+		undoManager = new UndoManager();
+		
 		area.setHighlighter(highlighter);
+		area.getDocument().addUndoableEditListener(undoManager);
 		
 		//setting the shortcuts
 		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
@@ -122,6 +132,8 @@ public class editor extends JFrame implements ActionListener {
 		edit.add(mark);
 		edit.add(copy);
 		edit.add(paste);
+		edit.add(undo);
+		edit.add(redo);
 		//edit.add(font);
 		save.addActionListener(this);
 		open.addActionListener(this);
@@ -135,6 +147,8 @@ public class editor extends JFrame implements ActionListener {
 		search.addActionListener(this);
 		copy.addActionListener(this);
 		paste.addActionListener(this);
+		undo.addActionListener(this);
+		redo.addActionListener(this);
 		menu2.add(info);
 		menu2.add(help);
 		//menu1
@@ -227,6 +241,12 @@ public class editor extends JFrame implements ActionListener {
 				e1.printStackTrace();
 			}
 			break;
+		case "Undo":
+			undo();
+			break;
+		case "Redo":
+			redo();
+			break;
 		case "Drucken":
 			/*
 			npj = new NetPrintJobs(this.area);
@@ -245,6 +265,20 @@ public class editor extends JFrame implements ActionListener {
 		
 	}
 	
+	private void redo() {
+		if(undoManager.canRedo()) {
+			undoManager.redo();
+		}
+		
+	}
+
+	private void undo() {
+		if(undoManager.canUndo()) {
+			undoManager.undo();
+		}
+		
+	}
+
 	public void openFile() {
 		String text = "";
 		chooser.showOpenDialog(null);
@@ -321,7 +355,7 @@ public class editor extends JFrame implements ActionListener {
 	}
 	
 	public void paste() throws UnsupportedFlavorException, IOException {//TODO: area.append() 
-		Transferable transfer = transfer = system.getContents(null);
+		Transferable transfer =  system.getContents(null);
 		//String s = area.getText();
 		for(DataFlavor flavor : transfer.getTransferDataFlavors()) {
 			Object content = transfer.getTransferData(flavor);
