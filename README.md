@@ -9,6 +9,7 @@ Development of a little note editor
 - insert the actual date and time into the text
 - give user help with the shortcuts and mnemorics
 - copy and paste content with a menu button
+- undo and redo functionallity
 
 # EasyNote --- What to expect
 EasyNote is a lightweight, simple text editor written in java. 
