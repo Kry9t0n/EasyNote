@@ -16,36 +16,36 @@ public class HelpDialog extends JDialog{
 	private JButton cancel;
 	private JScrollPane jsp;
 	private JTextArea text;
-	
+
 	public HelpDialog() {
 		/*all objects*/
 		ok = new JButton("OK");
 		cancel = new JButton("Abbrechen");
 		text = new JTextArea(); // the content will be setted later on
-		
+
 		cancel.setLocation(20, 310);
 		cancel.setSize(90, 30);
-		cancel.addActionListener((ActionEvent e) -> {this.discard()});
-		
+		cancel.addActionListener((ActionEvent e) -> {this.discard();});
+
 		ok.setLocation(110, 310);
 		ok.setSize(90, 30);
 		ok.addActionListener((ActionEvent e) -> {this.discard();});
-		
+
 		text.setColumns(20);
 		text.setRows(5);
 		text.setLineWrap(true);
 		text.setWrapStyleWord(true);
 		text.setEditable(false);
 		text.setSize(250, 250);
-		
+
 		jsp = new JScrollPane(text);
-		
+
 		add(ok);
 		add(cancel);
 		add(jsp);
-		
+
 		setHelpText();
-		
+
 		setSize(400, 400);
 		setTitle("Hilfe");
 		setLocationRelativeTo(null); //centers the dialog on the screen
@@ -53,11 +53,11 @@ public class HelpDialog extends JDialog{
 		setResizable(false);
 		setVisible(true);
 	}
-	
+
 	private void setHelpText() {
 		String text = "SHORTCUTS:\n Ctrl + s: opens the save dialog\n Ctrl + o: open the dialog to choose a later note to open\n Ctrl + p: opens the printer dialog\n Ctrl + m: opens the color chooser dialog\n"
 				+ "MNEMONICS:\n Datei -> s: opens the save dialog\n Hilfe -> h: opens the help dialog (this)\n";
 		this.text.setText(text);
 	}
-	
+
 }
