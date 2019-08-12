@@ -64,7 +64,7 @@ public class editor extends JFrame implements ActionListener, WindowListener {
 	private JMenuItem redo;
 	private boolean fileSaved;
 
-	
+
 	public static void renderSplashFrame(Graphics2D g, int frame) {
 		final String[] comps = {".", "..", "..."};
         g.setComposite(AlphaComposite.Clear);
@@ -73,18 +73,18 @@ public class editor extends JFrame implements ActionListener, WindowListener {
         g.setColor(Color.BLACK);
         g.drawString("Loading "+comps[(frame/5)%3], 20, 20);
 	}
-	
+
 	public editor() {
 		super("EasyNote");//setting the title
 		fileSaved = false;
-		
+
 		//Initialize the system clipboard
 		system = Toolkit.getDefaultToolkit().getSystemClipboard();
-		
-		
-		
+
+
+
 		highlighter = new DefaultHighlighter();
-		
+
 		bar = new JMenuBar();
 		area = new JTextArea(20, 20);
 		menu1 = new JMenu("Datei...");
@@ -109,19 +109,19 @@ public class editor extends JFrame implements ActionListener, WindowListener {
 		undo = new JMenuItem("Undo");
 		redo = new JMenuItem("Redo");
 		//font = new JMenuItem("Schrifteinstellungen");
-		
+
 		//Initializing undomanager
 		undoManager = new UndoManager();
-		
+
 		area.setHighlighter(highlighter);
 		area.getDocument().addUndoableEditListener(undoManager);
-		
+
 		//setting the shortcuts
 		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		print.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
 		mark.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK));
-		
+
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(700, 600);
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
@@ -169,13 +169,13 @@ public class editor extends JFrame implements ActionListener, WindowListener {
 		jsp.setLocation(200, 5);
 		add(jsp);
 		setJMenuBar(bar);
-		
+
 		splashInit();
-		
+
 		setVisible(true);
 	}
-	
-	
+
+
 	private void splashInit() {
 		splash = SplashScreen.getSplashScreen();
 		if (splash == null) {
@@ -196,7 +196,7 @@ public class editor extends JFrame implements ActionListener, WindowListener {
         }
         splash.close();
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		String cmd = event.getActionCommand();
@@ -266,21 +266,21 @@ public class editor extends JFrame implements ActionListener, WindowListener {
 				javax.swing.JOptionPane.showMessageDialog(this, "Unable to print this text!", "Fehler", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		
+
 	}
-	
+
 	private void redo() {
 		if(undoManager.canRedo()) {
 			undoManager.redo();
 		}
-		
+
 	}
 
 	private void undo() {
 		if(undoManager.canUndo()) {
 			undoManager.undo();
 		}
-		
+
 	}
 
 	public void openFile() {
@@ -322,21 +322,21 @@ public class editor extends JFrame implements ActionListener, WindowListener {
 		}
 
 	}
-	
+
 	public String getDate() {
 		SimpleDateFormat form = new SimpleDateFormat("dd.MM.yyyy");
 		return form.format(new Date());
 	}
-	
+
 	public String getTime() {
 		SimpleDateFormat form = new SimpleDateFormat("HH:MM:ss");
 		return form.format(new Date().getTime());
 	}
-	
+
 	public void updateTitle(String filename) {
 		setTitle("EasyNote --- " + " " + filename);
 	}
-	
+
 	public void mark() {
 			painter = new DefaultHighlighter.DefaultHighlightPainter(MARK);
 			int start_pos = area.getText().indexOf(area.getSelectedText());
@@ -348,18 +348,18 @@ public class editor extends JFrame implements ActionListener, WindowListener {
 				e.printStackTrace();
 			}
 	}
-	
+
 	public void setMarkColor(Color c) {
 		this.MARK = c;
 	}
-	
+
 	public void copy() {
 		if(area.getSelectedText() != null) {
 			system.setContents(new StringSelection(area.getSelectedText()), null);
 		}
 	}
-	
-	public void paste() throws UnsupportedFlavorException, IOException {//TODO: area.append() 
+
+	public void paste() throws UnsupportedFlavorException, IOException {//TODO: area.append()
 		Transferable transfer =  system.getContents(null);
 		//String s = area.getText();
 		for(DataFlavor flavor : transfer.getTransferDataFlavors()) {
@@ -375,7 +375,7 @@ public class editor extends JFrame implements ActionListener, WindowListener {
 			}
 		}
 		//area.setText(s);
-		
+
 	}
 
 	@Override
@@ -390,7 +390,7 @@ public class editor extends JFrame implements ActionListener, WindowListener {
 			int confirm = javax.swing.JOptionPane.showConfirmDialog(this, "Speichern?");
 			switch(confirm) {
 			case 3: case -1: break;
-			case 1: 
+			case 1:
 				this.dispose();
 				break;
 			case 0:
@@ -414,7 +414,9 @@ public class editor extends JFrame implements ActionListener, WindowListener {
 	public void windowOpened(WindowEvent arg0) {}
 	
 	public static void main(String[] args) {
+		EventQuene.invokeLater(() -> {
 		editor e = new editor();
+	  });
 	}
 
 }
