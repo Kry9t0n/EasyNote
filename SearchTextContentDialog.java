@@ -48,7 +48,7 @@ public class SearchTextContentDialog extends JDialog implements WindowListener {
 		painter = new DefaultHighlighter.DefaultHighlightPainter(HIGHLIGHT);
 
 		search = new JButton("Suchen");
-		input = new JTextField("Eingabe");
+		input = new JTextField();
 		searchString = new JLabel("Text eingeben:");
 		res = new JLabel();
 
@@ -70,7 +70,6 @@ public class SearchTextContentDialog extends JDialog implements WindowListener {
 		add(searchString);
 
 		res.setLocation(10, 380);
-		res.setText("No job executed");
 		add(res);
 
 		// adjust constrains
@@ -108,20 +107,17 @@ public class SearchTextContentDialog extends JDialog implements WindowListener {
 			res.setForeground(ERROR);
 			return;
 		} else {
-			String s = jtxt.getText();
-			String key = input.getText();
-			int begin = s.indexOf(key);
-			if (begin >= 0) {
-				int end = begin + key.length();
-				try {
-					HighlightTag = highligther.addHighlight(begin, end, painter);
-				} catch (BadLocationException e) {
-					e.printStackTrace();
-				}
-				res.setText("Wort gefunden!");
-			} else {
-				res.setText("Word nicht enthalten");
-				res.setForeground(ERROR);
+			String s = jtxt.getText().toLowerCase();
+			String key = input.getText().toLowerCase();
+			int begin = 0;
+			while ((begin = s.indexOf(key, begin)) >= 0) {
+					int end = begin + key.length();
+					try {
+						HighlightTag = highligther.addHighlight(begin, end, painter);
+					} catch (BadLocationException e) {
+						e.printStackTrace();
+					}
+					begin += key.length();
 			}
 		}
 	}
@@ -132,9 +128,7 @@ public class SearchTextContentDialog extends JDialog implements WindowListener {
 
 	@Override
 	public void windowClosed(WindowEvent e) {
-		if (this.HighlightTag != null) {
-			highligther.removeHighlight(HighlightTag);
-		}
+		highligther.removeAllHighlights();
 	}
 
 	@Override
