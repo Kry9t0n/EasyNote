@@ -5,7 +5,7 @@ Development of a little note editor
 - printing the document (also with a network printer)
 - open and save documents 
 - highlight important content of the document 
-- search words in the text (if the searched word in included several times only the first one will be marked)
+- search words in the text 
 - insert the actual date and time into the text
 - give user help with the shortcuts and mnemorics
 - copy and paste content with a menu button
